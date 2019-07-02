@@ -4,6 +4,7 @@
   "description": "Simple and lightweight Boilerplate for ReactJS projects",
   "scripts": {
     "lint": "eslint --ext .jsx,.js src",
+    "lint:fix": "eslint --ext .jsx,.js src --fix",
     "start": "node server.js"
   },
   "repository": {
