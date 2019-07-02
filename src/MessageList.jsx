@@ -1,11 +1,15 @@
-import App from './App'
+import React, {Component} from 'react'
 
-class MessageList extends App{
+class MessageList extends Component{
     render(){
-        <main class="messages">
-        <div class="message system">
+        return(
+        <main className="messages">
+        <div className="message system">
           Anonymous1 changed their name to nomnom.
         </div>
       </main>
+        )
     }
 } 
+
+export default MessageList; 
