@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import Header from './header.jsx'; 
 import MessageList from './MessageList.jsx'; 
 import ChatBar from './ChatBar.jsx'; 
+import generateRandomId from './utils.js'; 
+
 
 class App extends Component {
   constructor(props) {
@@ -21,6 +23,29 @@ class App extends Component {
             }
           ]
     }; 
+  }
+
+//function to update state
+ updateMessages =(chatBarMess) => {
+   //create your new object message
+   const newMess = {username: this.state.currentUser.name, //get usernmae in state
+    content: chatBarMess, //get the content from the value your passing in the function 
+    id: generateRandomId() //call generateRamdomId()
+  }
+   this.setState({ //when want to have current state and add your new message
+     messages: [...this.state.messages, newMess ] //... to remoove array, otherwise you have 2 arrays bc this.state.messages is in an array
+   })
+   
+ }
+
+  //handling user actions 
+  handleInput = (event) => { 
+    event.preventDefault()
+    console.log(event.target.value) //this gives the value of the key 
+   console.log(event.key) //this gives the key type
+   if (event.key === 'Enter'){ //if your key type is enter
+    this.updateMessages(event.target.value); //call updateMessages function and pass the message 
+      }
   }
       //component lifecyle excercise 
       componentDidMount() {
@@ -45,6 +70,7 @@ class App extends Component {
       />
       <ChatBar 
         currentUser={this.state.currentUser}
+        handleInput={this.handleInput}
       /> 
       </div>
     );
