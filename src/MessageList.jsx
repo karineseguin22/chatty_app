@@ -5,13 +5,15 @@ class MessageList extends Component{
     constructor(props){
         super(props)
     }
+    
+    
 
     render(){
 
         let messagesData = this.props.messages
-        let data = messagesData.map((message) => (
-            <Message message={message} key={message.id}/>
-           )
+        let data = messagesData.map((message) => {
+            return(<Message message={message} key={message.id}/>)
+        }
        );
         return(
         <main className="messages">

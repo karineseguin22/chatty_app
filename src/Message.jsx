@@ -1,4 +1,5 @@
-import React, {Component} from 'react'
+import React, {Component} from 'react';
+ 
 
 class Message extends Component{
     constructor(props){
@@ -7,8 +8,8 @@ class Message extends Component{
     render(){
         return(
         <div className="message">
-        <span className="message-username">{this.props.data.username}</span>
-        <span className="message-content">{this.props.data.content}</span>
+        <span className="message-username">{this.props.message.username}</span>
+        <span className="message-content">{this.props.message.content}</span>
       </div>
         )
     }
