@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import Header from './header.jsx'; 
 import MessageList from './MessageList.jsx'; 
-import Message from './Message.jsx'; 
 import ChatBar from './ChatBar.jsx'; 
 
 class App extends Component {
@@ -9,25 +8,30 @@ class App extends Component {
     super(props);
     this.state = {
           currentUser: {name: "Bob"}, // optional. if currentUser is not defined, it means the user is Anonymous
-      messages: [
-        {
-          username: "Bob",
-          content: "Has anyone seen my marbles?",
-        },
-        {
-          username: "Anonymous",
-          content: "No, I think you lost them. You lost your marbles Bob. You lost them for good."
-        }
-      ]
+          messages: [
+            {
+              username: "Bob",
+              content: "Has anyone seen my marbles?",
+              id: 111
+            },
+            {
+              username: "Anonymous",
+              content: "No, I think you lost them. You lost your marbles Bob. You lost them for good.",
+              id: 112
+            }
+          ]
     }; 
   }
   render() {
     return (
       <div>
       <Header/> 
-      <MessageList/>
-      <Message/>
-      <ChatBar currentUser={this.state.currentUser}/> 
+      <MessageList
+       messages={this.state.messages}
+      />
+      <ChatBar 
+        currentUser={this.state.currentUser}
+      /> 
       </div>
     );
   }
