@@ -28,10 +28,18 @@ wss.on('connection', (ws) => {
     receiveMsg.id = uuidv4(); 
   console.log(receiveMsg); 
 
+  //message w/out type
+  const sendMsg ={
+    id: receiveMsg.id,
+    content: receiveMsg.content,
+    username:receiveMsg.username
+  }
+
+
     //broadcast message to all clients and including itself 
     wss.clients.forEach(function each(client){
       if (client.readyState === SocketServer.OPEN){
-        client.send(receiveMsg);
+        client.send(sendMsg);
       }
     }
     )
