@@ -23,37 +23,58 @@ class App extends Component {
             }
           ]
     }; 
+    this.socketServer = undefined;
   }
 
 //function to update state
- updateMessages =(chatBarMess) => {
-   //create your new object message
-   const newMess = {username: this.state.currentUser.name, //get usernmae in state
-    content: chatBarMess, //get the content from the value your passing in the function 
-    id: generateRandomId() //call generateRamdomId()
-  }
-   this.setState({ //when want to have current state and add your new message
-     messages: [...this.state.messages, newMess ] //... to remoove array, otherwise you have 2 arrays bc this.state.messages is in an array
-   })
+//  updateMessages =(chatBarMess) => {
+//    //create your new object message
+//    const newMess = {username: this.state.currentUser.name, //get usernmae in state
+//     content: chatBarMess, //get the content from the value your passing in the function 
+//     id: generateRandomId() //call generateRamdomId()
+//   }
+//   //this.socketServer.send(newMess);
+//    this.setState({ //when want to have current state and add your new message
+//      messages: [...this.state.messages, newMess ] //... to remoove array, otherwise you have 2 arrays bc this.state.messages is in an array
+//    })
    
+//  }
+
+updateMessages =(chatBarMess) => {
+  const newMess = {username: this.state.currentUser.name, 
+   content: chatBarMess, 
+   id: generateRandomId() 
  }
+ console.log(newMess, chatBarMess)
+  this.setState({ 
+    messages: [...this.state.messages, newMess ] 
+  })
+  
+}
 
   //handling user actions 
   handleInput = (event) => { 
     event.preventDefault()
-    console.log(event.target.value) //this gives the value of the key 
-   console.log(event.key) //this gives the key type
-   if (event.key === 'Enter'){ //if your key type is enter
-    this.updateMessages(event.target.value); //call updateMessages function and pass the message 
+   if (event.key === 'Enter'){ 
+
+     //send message to server
+     console.log(event.target.value)
+     this.updateMessages(event.target.value); //pass the message 
+     const msg = {type: 'sendMessage', content:event.target.value, username:this.state.currentUser.name}
+      this.socketServer.send(JSON.stringify(msg))
+  
       }
-      //Creating the connection to the Socket Server
-  this.SocketServer = new WebSocket('ws://localhost:3001');
+    
   }
 
+ 
+
   
-      //component lifecyle excercise 
       componentDidMount() {
-        console.log('Connected to server')
+        this.socketServer = new WebSocket('ws://localhost:3001');
+          console.log('Connected to Server') 
+
+    
         // console.log("componentDidMount <App />");
         // setTimeout(() => {
         //   console.log("Simulating incoming message");
