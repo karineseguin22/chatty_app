@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import Header from './header.jsx'; 
 import MessageList from './MessageList.jsx'; 
 import ChatBar from './ChatBar.jsx'; 
-import generateRandomId from './utils.js'; 
+//import generateRandomId from './utils.js'; 
 
 
 class App extends Component {
@@ -10,18 +10,7 @@ class App extends Component {
     super(props);
     this.state = {
           currentUser: {name: "Bob"}, // optional. if currentUser is not defined, it means the user is Anonymous
-          messages: [
-            {
-              username: "Bob",
-              content: "Has anyone seen my marbles?",
-              id: 111
-            },
-            {
-              username: "Anonymous",
-              content: "No, I think you lost them. You lost your marbles Bob. You lost them for good.",
-              id: 112
-            }
-          ]
+          messages: []
     }; 
     this.socketServer = undefined;
   }
@@ -42,10 +31,10 @@ class App extends Component {
 
 updateMessages =(chatBarMess) => {
   const newMess = {username: this.state.currentUser.name, 
-   content: chatBarMess, 
-   id: generateRandomId() 
+   content: chatBarMess//, 
+   //id: generateRandomId()  -> add id in server instead 
  }
- console.log(newMess, chatBarMess)
+ //console.log(newMess, chatBarMess)
   this.setState({ 
     messages: [...this.state.messages, newMess ] 
   })
@@ -58,7 +47,7 @@ updateMessages =(chatBarMess) => {
    if (event.key === 'Enter'){ 
 
      //send message to server
-     console.log(event.target.value)
+     //console.log(event.target.value)
      this.updateMessages(event.target.value); //pass the message 
      const msg = {type: 'sendMessage', content:event.target.value, username:this.state.currentUser.name}
       this.socketServer.send(JSON.stringify(msg))
@@ -72,8 +61,13 @@ updateMessages =(chatBarMess) => {
   
       componentDidMount() {
         this.socketServer = new WebSocket('ws://localhost:3001');
-          console.log('Connected to Server') 
-
+          console.log('Connected to Server');  
+      
+      //client react need to display message 
+        this.socketServer.onmessage = function (event){
+          console.log('Hello world');
+          console.log(JSON.parse(event.data)); 
+        }
     
         // console.log("componentDidMount <App />");
         // setTimeout(() => {
