@@ -26,9 +26,16 @@ wss.on('connection', (ws) => {
 
     //need to add id to message 
     receiveMsg.id = uuidv4(); 
-  
+  console.log(receiveMsg); 
 
-    //broadcast message to all clients
+    //broadcast message to all clients and including itself 
+    wss.clients.forEach(function each(client){
+      if (client.readyState === SocketServer.OPEN){
+        client.send(receiveMsg);
+      }
+    }
+    )
+
 
   })
   // Set up a callback for when a Client closes the socket. This usually means they closed their browser.
