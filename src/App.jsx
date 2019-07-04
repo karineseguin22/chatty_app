@@ -9,7 +9,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-          currentUser: {name: "Bob"}, // optional. if currentUser is not defined, it means the user is Anonymous
+          currentUser: [],//{name: "Karine"}, // optional. if currentUser is not defined, it means the user is Anonymous
           messages: []
     }; 
     this.socketServer = undefined;
@@ -65,7 +65,7 @@ updateMessages =(chatBarMess) => {
         this.socketServer = new WebSocket('ws://localhost:3001');
           console.log('Connected to Server');  
       //client react need to display message 
-        this.socketServer.onmessage = (event) => { 
+        this.socketServer.onmessage = (event) => { //need arrow function to use keyword this and have access to this in constructor
           console.log('direct dans csocketsoerver onmessage',this.state.messages)
 
           const msg = JSON.parse(event.data)
