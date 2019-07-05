@@ -9,7 +9,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-          currentUser: [],//{name: "Karine"}, // optional. if currentUser is not defined, it means the user is Anonymous
+          currentUser: {}, // optional. if currentUser is not defined, it means the user is Anonymous
           messages: []
     }; 
     this.socketServer = undefined;
@@ -46,33 +46,31 @@ updateMessages =(chatBarMess) => {
   //handling user actions 
   handleInput = (event) => { 
     event.preventDefault()
+    console.log(`Value outside:${event.target.value}`); 
    if (event.key === 'Enter'){ 
-
      //send message to server
-     //console.log(event.target.value)
      //this.updateMessages(event.target.value); //no longer passing message from here
+     console.log(`Value inside:${event.target.value}`); 
      const msg = {type: 'sendMessage', content:event.target.value, username:this.state.currentUser.name}
       this.socketServer.send(JSON.stringify(msg))
-  
       }
     
   }
-
- 
-
+  //to update user name
+  handleInputUserName = (event) => { 
+    event.preventDefault()
+    console.log(`Value username outside:${event.target.value}`); 
+    const username = event.target.value;
+    this.setState({currentUser: {name: username}}); 
+    
+  }
   
       componentDidMount() {
         this.socketServer = new WebSocket('ws://localhost:3001');
           console.log('Connected to Server');  
       //client react need to display message 
         this.socketServer.onmessage = (event) => { //need arrow function to use keyword this and have access to this in constructor
-          console.log('direct dans csocketsoerver onmessage',this.state.messages)
-
           const msg = JSON.parse(event.data)
-          console.log(msg); 
-      
-        
-        
           this.setState({ 
             messages: [...this.state.messages, msg ] 
           })
@@ -89,7 +87,7 @@ updateMessages =(chatBarMess) => {
        messages={this.state.messages}
       />
       <ChatBar 
-        currentUser={this.state.currentUser}
+        handleInputUserName={this.handleInputUserName}
         handleInput={this.handleInput}
       /> 
       </div>
