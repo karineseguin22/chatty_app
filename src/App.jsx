@@ -61,6 +61,7 @@ updateMessages =(chatBarMess) => {
     event.preventDefault()
     console.log(`Value username outside:${event.target.value}`); 
     if (event.key === 'Enter'){ 
+      console.log(`Value inside:${event.target.value}`); 
       const username = event.target.value;
    //console.log('type: incomingNotification, content: this.state.currentUser.name changes their name to username') //send this to server
     this.setState({currentUser: {name: username}}); 
