@@ -9,7 +9,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-          currentUser: {}, // optional. if currentUser is not defined, it means the user is Anonymous
+          currentUser: {name: 'Anonymous1'}, // optional. if currentUser is not defined, it means the user is Anonymous
           messages: []
     }; 
     this.socketServer = undefined;
@@ -60,9 +60,11 @@ updateMessages =(chatBarMess) => {
   handleInputUserName = (event) => { 
     event.preventDefault()
     console.log(`Value username outside:${event.target.value}`); 
-    const username = event.target.value;
+    if (event.key === 'Enter'){ 
+      const username = event.target.value;
+   //console.log('type: incomingNotification, content: this.state.currentUser.name changes their name to username') //send this to server
     this.setState({currentUser: {name: username}}); 
-    
+  }
   }
   
       componentDidMount() {
