@@ -51,7 +51,7 @@ updateMessages =(chatBarMess) => {
      //send message to server
      //this.updateMessages(event.target.value); //no longer passing message from here
      console.log(`Value inside:${event.target.value}`); 
-     const msg = {type: 'sendMessage', content:event.target.value, username:this.state.currentUser.name}
+     const msg = {type: 'postMessage', content:event.target.value, username:this.state.currentUser.name}
       this.socketServer.send(JSON.stringify(msg))
       }
     

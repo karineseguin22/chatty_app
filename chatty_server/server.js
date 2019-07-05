@@ -30,6 +30,7 @@ wss.on('connection', (ws) => {
 
   //message w/out type
   const sendMsg ={
+    type: incomingMessage, 
     id: receiveMsg.id,
     content: receiveMsg.content,
     username:receiveMsg.username
