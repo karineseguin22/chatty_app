@@ -21,14 +21,17 @@ wss.on('connection', (ws) => {
   console.log('Client connected');
   ws.on('open', () => console.log('Client Connected'));
   ws.on('message', function incoming(data) {
-    console.log(JSON.parse(data))
     const receiveMsg = JSON.parse(data)
 
     //need to add id to message 
     receiveMsg.id = uuidv4(); 
-  console.log(receiveMsg); 
 
-  //message w/out type
+  //create a switch statement to see what type of message it is 
+  const command = receiveMsg.type
+  console.log(`Type of message: ${receiveMsg.type}`); 
+    switch (command){
+      case 'postMessage': 
+      //message w/out type
   const sendMsg ={
     type: 'incomingMessage', 
     id: receiveMsg.id,
@@ -36,17 +39,22 @@ wss.on('connection', (ws) => {
     username:receiveMsg.username
   }
 
-
-    //broadcast message to all clients and including itself 
-    wss.clients.forEach(function each(client){
-      console.log({client: client.readyState, SOCKET: SocketServer.OPEN});
-      if (client.readyState === SocketServer.OPEN){
-        console.log('Currently sending the message to the front end'); 
-        client.send(JSON.stringify(sendMsg));
-      }
-    });
-
-
+  //broadcast message to all clients and including itself 
+  wss.clients.forEach(function each(client){
+    console.log({client: client.readyState, SOCKET: SocketServer.OPEN});
+    if (client.readyState === SocketServer.OPEN){
+      console.log('Currently sending the message to the front end'); 
+      client.send(JSON.stringify(sendMsg));
+    }
+  });
+  break; 
+  case 'postNotification': 
+  console.log('this is a notification in the server')
+    
+    break;
+    default:
+      console.log('default');
+    }
   })
   // Set up a callback for when a Client closes the socket. This usually means they closed their browser.
   ws.on('close', () => console.log('Client disconnected'));
