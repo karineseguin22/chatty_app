@@ -76,9 +76,19 @@ updateMessages =(chatBarMess) => {
       //client react need to display message 
         this.socketServer.onmessage = (event) => { //need arrow function to use keyword this and have access to this in constructor
           const msg = JSON.parse(event.data)
+          const command = msg.type
+          switch (command){
+            case 'incomingMessage': 
           this.setState({ 
             messages: [...this.state.messages, msg ] 
           })
+            break;
+            case 'incomingNotification':
+            break; 
+            default:
+                console.log('default');
+          }
+          
         }
     
   
