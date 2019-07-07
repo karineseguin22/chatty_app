@@ -64,6 +64,8 @@ updateMessages =(chatBarMess) => {
       console.log(`Value inside:${event.target.value}`); 
       const username = event.target.value;
    //console.log('type: incomingNotification, content: this.state.currentUser.name changes their name to username') //send this to server
+   const notification = {type: 'postNotification', content:'X changes their name to Y'}
+      this.socketServer.send(JSON.stringify(notification))
     this.setState({currentUser: {name: username}}); 
   }
   }
