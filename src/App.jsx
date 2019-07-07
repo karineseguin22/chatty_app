@@ -35,7 +35,7 @@ updateMessages =(chatBarMess) => {
    content: chatBarMess.content, 
    id: chatBarMess.id
  }
- //console.log(newMess, chatBarMess)
+
   this.setState({ 
     messages: [...this.state.messages, newMess ] 
   })
