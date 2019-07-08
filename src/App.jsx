@@ -62,10 +62,11 @@ class App extends Component {
             this.setState({ 
               messages: [...this.state.messages, msg ] 
             })
+            break; 
             case 'usersOnline':
             console.log(msg.content); 
             this.setState({ 
-              usersOnline: msg.content
+              usersOnline: msg.content  
             })
           break; 
           default:
