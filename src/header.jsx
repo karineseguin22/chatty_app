@@ -5,6 +5,7 @@ class Header extends Component{
     return (
         <nav className="navbar">
         <a href="/" className="navbar-brand">Chatty</a>
+        <p className="users-online-display"> X users online</p>
       </nav> 
     )
     }
