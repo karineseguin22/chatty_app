@@ -41,7 +41,6 @@ wss.on('connection', (ws) => {
 
   //broadcast message to all clients and including itself 
   wss.clients.forEach(function each(client){
-    console.log({client: client.readyState, SOCKET: SocketServer.OPEN});
     if (client.readyState === SocketServer.OPEN){
       console.log('Currently sending the message to the front end'); 
       client.send(JSON.stringify(sendMsg));
@@ -50,6 +49,20 @@ wss.on('connection', (ws) => {
   break; 
   case 'postNotification': 
   console.log('this is a notification in the server')
+  const sendNot ={
+    type: 'incomingNotification', 
+    id: receiveMsg.id,
+    content: receiveMsg.content,
+  }
+
+  //broadcast message to all clients and including itself 
+  wss.clients.forEach(function each(client){
+    if (client.readyState === SocketServer.OPEN){
+      console.log('Currently sending the notification to the front end'); 
+      client.send(JSON.stringify(sendNot));
+      console.log(sendNot)
+    }
+  });
     
     break;
     default:

@@ -16,33 +16,6 @@ class App extends Component {
 
   }
 
-//function to update state
-//  updateMessages =(chatBarMess) => {
-//    //create your new object message
-//    const newMess = {username: this.state.currentUser.name, //get usernmae in state
-//     content: chatBarMess, //get the content from the value your passing in the function 
-//     id: generateRandomId() //call generateRamdomId()
-//   }
-//   //this.socketServer.send(newMess);
-//    this.setState({ //when want to have current state and add your new message
-//      messages: [...this.state.messages, newMess ] //... to remoove array, otherwise you have 2 arrays bc this.state.messages is in an array
-//    })
-   
-//  }
-
-updateMessages =(chatBarMess) => { //no  longer need this function 
-  const newMess = {username: chatBarMess.username, 
-   content: chatBarMess.content, 
-   id: chatBarMess.id
- }
-
-  this.setState({ 
-    messages: [...this.state.messages, newMess ] 
-  })
-
-  
-}
-
   //handling user actions 
   handleInput = (event) => { 
     event.preventDefault()
@@ -64,7 +37,7 @@ updateMessages =(chatBarMess) => { //no  longer need this function
       console.log(`Value inside:${event.target.value}`); 
       const username = event.target.value;
    //console.log('type: incomingNotification, content: this.state.currentUser.name changes their name to username') //send this to server
-   const notification = {type: 'postNotification', content:'X changes their name to Y'}
+   const notification = {type: 'postNotification', content:`${this.state.currentUser.name} changed their name to ${event.target.value}`}
       this.socketServer.send(JSON.stringify(notification))
     this.setState({currentUser: {name: username}}); 
   }
@@ -76,25 +49,23 @@ updateMessages =(chatBarMess) => { //no  longer need this function
       //client react need to display message 
         this.socketServer.onmessage = (event) => { //need arrow function to use keyword this and have access to this in constructor
           const msg = JSON.parse(event.data)
-            this.setState({ 
+          const command = msg.type
+          switch (command){
+            case 'incomingMessage': 
+          this.setState({ 
             messages: [...this.state.messages, msg ] 
           })
-          //const command = msg.type
-          // switch (command){
-          //   case 'incomingMessage': 
-          // this.setState({ 
-          //   messages: [...this.state.messages, msg ] 
-          // })
-          //   break;
-          //   case 'incomingNotification':
-          //   break; 
-          //   default:
-          //       console.log('default');
-          // }
-          
+          break;
+          case 'incomingNotification':
+            console.log('front end received notification')
+            this.setState({ 
+              messages: [...this.state.messages, msg ] 
+            })
+          break; 
+          default:
+          console.log('default');
+          }  
         }
-    
-  
       }
   
   render() {
