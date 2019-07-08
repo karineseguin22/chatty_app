@@ -11,7 +11,12 @@ class MessageList extends Component{
     render(){
 
         let messagesData = this.props.messages
+       
         let data = messagesData.map((message) => {
+          //const command = message.type
+          //console.log(`Message type in messagelist:ß${command}`)
+          //switch (command){
+          //}
             return(<Message message={message} key={message.id}/>)
         }
        );
