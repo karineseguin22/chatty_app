@@ -15,20 +15,19 @@ class MessageList extends Component{
         let dataMsg = messagesData.map((message) => {
           if (message.type === 'incomingMessage'){
             return(<Message message={message} key={message.id}/>)
+          }else if(message.type === 'incomingNotification'){
+            return(<div className='message-system'>{message.content}</div>)
           }
         }
        );
-       let dataNot = messagesData.map((message) => {
-        if (message.type === 'incomingNotification'){
-          return(<Message message={message} key={message.id}/>)
-        }
-      }
-     );
+    //    let dataNot = messagesData.map((message) => {
+    //     if (message.type === 'incomingNotification'){
+    //       return(<Message message={message} key={message.id}/>)
+    //     }
+    //   }
+    //  );
         return(
         <main className="messages">
-        <div className="message system">
-          {dataNot}
-        </div>
         {dataMsg} 
       </main>
         )
