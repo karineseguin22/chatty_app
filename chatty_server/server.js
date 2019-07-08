@@ -21,8 +21,23 @@ let usersOnline = 0;
 console.log(usersOnline); 
 wss.on('connection', (ws) => {
   usersOnline++; 
+  console.log(usersOnline); 
   console.log('Client connected1');
   ws.on('open', () => console.log('Client Connected2'));
+  
+
+  //message that represent users online 
+  const usersOnl ={
+    type: 'usersOnline', 
+    content: usersOnline,
+  }
+  wss.clients.forEach(function each(client){
+    if (client.readyState === SocketServer.OPEN){
+      console.log('Currently sending the notification to the front end'); 
+      client.send(JSON.stringify(usersOnl));
+    }
+  });
+
   ws.on('message', function incoming(data) {
     const receiveMsg = JSON.parse(data)
 
@@ -74,7 +89,8 @@ wss.on('connection', (ws) => {
   })
   // Set up a callback for when a Client closes the socket. This usually means they closed their browser.
   ws.on('close', () => {
-    console.log('Client disconnected')
-    usersOnline++;
+    console.log('Client disconnected');
+    usersOnline--;
+    console.log(usersOnline); 
   });
 });
