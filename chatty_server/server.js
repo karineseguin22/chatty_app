@@ -92,5 +92,16 @@ wss.on('connection', (ws) => {
     console.log('Client disconnected');
     usersOnline--;
     console.log(usersOnline); 
+    //message that represent users online 
+  const usersOnl ={
+    type: 'usersOnline', 
+    content: usersOnline,
+  }
+  wss.clients.forEach(function each(client){
+    if (client.readyState === SocketServer.OPEN){
+      console.log('Currently sending the notification to the front end'); 
+      client.send(JSON.stringify(usersOnl));
+    }
+  });
   });
 });

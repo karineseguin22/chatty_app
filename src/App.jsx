@@ -61,6 +61,8 @@ class App extends Component {
             this.setState({ 
               messages: [...this.state.messages, msg ] 
             })
+            case 'usersOnline':
+            console.log(event.data); 
           break; 
           default:
           console.log('default');
