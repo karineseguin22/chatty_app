@@ -12,16 +12,24 @@ class MessageList extends Component{
 
         let messagesData = this.props.messages
        
-        let data = messagesData.map((message) => {
+        let dataMsg = messagesData.map((message) => {
+          if (message.type === 'incomingMessage'){
             return(<Message message={message} key={message.id}/>)
+          }
         }
        );
+       let dataNot = messagesData.map((message) => {
+        if (message.type === 'incomingNotification'){
+          return(<Message message={message} key={message.id}/>)
+        }
+      }
+     );
         return(
         <main className="messages">
         <div className="message system">
-          Anonymous1 changed their name to nomnom.
+          {dataNot}
         </div>
-        {data} 
+        {dataMsg} 
       </main>
         )
     }
