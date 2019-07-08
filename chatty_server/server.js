@@ -17,11 +17,9 @@ const wss = new SocketServer.Server({ server });
 // Set up a callback that will run when a client connects to the server
 // When a client connects they are assigned a socket, represented by
 // the ws parameter in the callback.
-let usersOnline = 0;
-console.log(usersOnline); 
+let usersOnline = 0;//set counter to keep track of online users
 wss.on('connection', (ws) => {
-  usersOnline++; 
-  console.log(usersOnline); 
+  usersOnline++;
   console.log('Client connected1');
   ws.on('open', () => console.log('Client Connected2'));
   
@@ -46,7 +44,6 @@ wss.on('connection', (ws) => {
 
   //create a switch statement to see what type of message it is 
   const command = receiveMsg.type
-  console.log(`Type of message: ${receiveMsg.type}`); 
     switch (command){
       case 'postMessage': 
       //message w/out type
@@ -91,7 +88,7 @@ wss.on('connection', (ws) => {
   ws.on('close', () => {
     console.log('Client disconnected');
     usersOnline--;
-    console.log(usersOnline); 
+  
     //message that represent users online 
   const usersOnl ={
     type: 'usersOnline', 

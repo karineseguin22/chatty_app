@@ -63,7 +63,7 @@ class App extends Component {
               messages: [...this.state.messages, msg ] 
             })
             break; 
-            case 'usersOnline':
+            case 'usersOnline': //to update state that displays number of users online
             console.log(msg.content); 
             this.setState({ 
               usersOnline: msg.content  
