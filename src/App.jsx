@@ -9,7 +9,8 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-          currentUser: {name: 'Anonymous1', usersOnline: 0}, // optional. if currentUser is not defined, it means the user is Anonymous
+          currentUser: {name: 'Anonymous1'}, // optional. if currentUser is not defined, it means the user is Anonymous
+          usersOnline: 0,
           messages: []
     }; 
     this.socketServer = undefined;
@@ -62,7 +63,10 @@ class App extends Component {
               messages: [...this.state.messages, msg ] 
             })
             case 'usersOnline':
-            console.log(event.data); 
+            console.log(msg.content); 
+            this.setState({ 
+              usersOnline: msg.content
+            })
           break; 
           default:
           console.log('default');
@@ -74,7 +78,7 @@ class App extends Component {
     return (
       <div>
       <Header
-      onlineUsers={this.state.currentUser.usersOnline}
+      onlineUsers={this.state.usersOnline}
       /> 
       <MessageList
        messages={this.state.messages}
