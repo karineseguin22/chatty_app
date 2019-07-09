@@ -21,9 +21,14 @@ let usersOnline = 0;//set counter to keep track of online users
 wss.on('connection', (ws) => {
   usersOnline++;
   console.log('Client connected1');
-  ws.on('open', () => console.log('Client Connected2'));
-  
-
+    //create object for total users online during session
+  let totalUsers = {
+    type: "incomingTotalUsers",
+    content: usersOnline
+  }
+    console.log(`total users: ${totalUsers.content}`); 
+    ws.send(JSON.stringify(totalUsers));
+    
   //message that represent users online 
   const usersOnl ={
     type: 'usersOnline', 
