@@ -2,41 +2,33 @@ const express = require('express');
 const SocketServer = require('ws');
 const uuidv4 = require('uuid/v4');
 
-// Set the port to 3001
 const PORT = 3001;
 
-// Create a new express server
+
 const server = express()
-   // Make the express server serve static assets (html, javascript, css) from the /public folder
   .use(express.static('public'))
   .listen(PORT, '0.0.0.0', 'localhost', () => console.log(`Listening on ${ PORT }`));
 
-// Create the WebSockets server
+
 const wss = new SocketServer.Server({ server });
 
-// Set up a callback that will run when a client connects to the server
-// When a client connects they are assigned a socket, represented by
-// the ws parameter in the callback.
-let usersOnline = 0;//set counter to keep track of online users
+let usersOnline = 0; //create object for total users online during session
 wss.on('connection', (ws) => {
   usersOnline++;
   console.log('Client connected1');
-    //create object for total users online during session
-  let totalUsers = {
+  let totalUsers = {     
     type: "incomingTotalUsers",
     content: usersOnline
   }
-    console.log(`total users: ${totalUsers.content}`); 
-    ws.send(JSON.stringify(totalUsers));
-    
-  //message that represent users online 
-  const usersOnl ={
+    ws.send(JSON.stringify(totalUsers)); //only send message to client that just connected 
+
+
+  const usersOnl ={ //object to send number to be used with Anonymous 
     type: 'usersOnline', 
     content: usersOnline,
   }
   wss.clients.forEach(function each(client){
     if (client.readyState === SocketServer.OPEN){
-      console.log('Currently sending the notification to the front end'); 
       client.send(JSON.stringify(usersOnl));
     }
   });
@@ -44,52 +36,47 @@ wss.on('connection', (ws) => {
   ws.on('message', function incoming(data) {
     const receiveMsg = JSON.parse(data)
 
-    //need to add id to message 
     receiveMsg.id = uuidv4(); 
 
-  //create a switch statement to see what type of message it is 
-  const command = receiveMsg.type
+    const command = receiveMsg.type
     switch (command){
       case 'postMessage': 
-      //message w/out type
-  const sendMsg ={
-    type: 'incomingMessage', 
-    id: receiveMsg.id,
-    content: receiveMsg.content,
-    username:receiveMsg.username
-  }
+        
+      const sendMsg ={
+        type: 'incomingMessage', 
+        id: receiveMsg.id,
+        content: receiveMsg.content,
+        username:receiveMsg.username
+      }
 
-  //broadcast message to all clients and including itself 
-  wss.clients.forEach(function each(client){
-    if (client.readyState === SocketServer.OPEN){
-      console.log('Currently sending the message to the front end'); 
-      client.send(JSON.stringify(sendMsg));
-    }
-  });
-  break; 
-  case 'postNotification': 
-  console.log('this is a notification in the server')
-  const sendNot ={
-    type: 'incomingNotification', 
-    id: receiveMsg.id,
-    content: receiveMsg.content,
-  }
+      //broadcast message to all clients and including itself 
+      wss.clients.forEach(function each(client){
+        if (client.readyState === SocketServer.OPEN){
+          console.log('Currently sending the message to the front end'); 
+          client.send(JSON.stringify(sendMsg));
+        }
+      });
+      break; 
+      case 'postNotification': 
+      const sendNot ={
+        type: 'incomingNotification', 
+        id: receiveMsg.id,
+        content: receiveMsg.content,
+      }
 
-  //broadcast message to all clients and including itself 
-  wss.clients.forEach(function each(client){
-    if (client.readyState === SocketServer.OPEN){
-      console.log('Currently sending the notification to the front end'); 
-      client.send(JSON.stringify(sendNot));
-      console.log(sendNot)
-    }
-  });
-    
-    break;
-    default:
-      console.log('default');
+      //broadcast message to all clients and including itself 
+      wss.clients.forEach(function each(client){
+        if (client.readyState === SocketServer.OPEN){
+          client.send(JSON.stringify(sendNot));
+  
+          }
+        });
+      break;
+      default:
+        console.log('default');
     }
   })
-  // Set up a callback for when a Client closes the socket. This usually means they closed their browser.
+
   ws.on('close', () => {
     console.log('Client disconnected');
     usersOnline--;
@@ -101,7 +88,6 @@ wss.on('connection', (ws) => {
   }
   wss.clients.forEach(function each(client){
     if (client.readyState === SocketServer.OPEN){
-      console.log('Currently sending the notification to the front end'); 
       client.send(JSON.stringify(usersOnl));
     }
   });
